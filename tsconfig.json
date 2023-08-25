@@ -28,11 +28,15 @@
     ]
   },
   "include": [
+    "src/**/*.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    "src",
+    ".ice",
+    "images.d.ts"
   ],
   "exclude": [
     "node_modules"
