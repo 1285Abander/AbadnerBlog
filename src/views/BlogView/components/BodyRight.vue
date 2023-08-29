@@ -143,6 +143,7 @@ onUnmounted(() => {
     }
 
     .navRight {
+        user-select: none;
         flex: 1;
         width: 200px;
         font-size: 15px;

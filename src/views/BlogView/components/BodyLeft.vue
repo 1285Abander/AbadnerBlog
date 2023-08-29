@@ -43,6 +43,7 @@ const getFile = (index: number, e: any) => {
 
 <style lang="less" scoped>
 .left_total {
+    user-select: none;
     background-color: var(--theme_bg_color);
     min-width: 200px;
     width: 200px;

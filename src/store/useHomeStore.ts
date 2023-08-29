@@ -19,7 +19,6 @@ export const useHomeStore = defineStore('home', {
   actions: {
     async getHomeList() {
       let res = await getHomeList()
-      console.log(res.data)
       this.options = [
         {
           value: '前端',

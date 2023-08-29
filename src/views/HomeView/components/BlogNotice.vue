@@ -17,7 +17,6 @@ const markdown = computed(() => {
 })
 
 HomeStore.getNotice()
-console.log(props.showNotice)
 </script>
 
 <template>

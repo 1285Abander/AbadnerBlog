@@ -80,6 +80,7 @@ const onSkip = (techid: number) => {
 
 
 .BlogheadTotal {
+    user-select: none;
     transition: all .3s ease-in-out;
     position: fixed;
     z-index: 10;

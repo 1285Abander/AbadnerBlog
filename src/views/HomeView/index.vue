@@ -251,6 +251,7 @@ onMounted(() => {
 //切换主题
 let { changeMode, mode, cssMode, changeCss } = useMode()
 const loading = ref(false)
+
 /* 小提示 */
 const tips = reactive([
     "爱意东升西落，浪漫至死不渝",
@@ -260,6 +261,7 @@ const tipsNum = ref(0)
 const change = () => {
     loading.value = !loading.value
     tipsNum.value = Math.floor(Math.random() * tips.length)
+    console.log(tipsNum)
     let TimeOut = setTimeout(() => {
         loading.value = !loading.value
         clearTimeout(TimeOut)
@@ -287,7 +289,7 @@ const showNotice = () => {
 /* 遮罩层 */
 watchEffect(() => {
     if (noticeShow.value) {
-        document.body.style.cssText = "width:clc(100%-17px);height:100vh;overflow:hidden;margin-right:17px"
+        document.body.style.cssText = "width:clc(100%);height:100vh;overflow:hidden;"
     } else {
         document.body.style.cssText = "overflow:auto"
     }
@@ -333,9 +335,12 @@ const backShow = ref(true)
                     </div>
                 </div>
                 <div class="info">
-                    <p>------</p>
-                    <p>---------------</p>
-                    <p>----------------------------------------------------------------------</p>
+                    <p>笔者姓名：姚涵豪</p>
+                    <p>笔者简介：6年码龄，掌握C语言，python，C++等编程语言，有硬件开发基础；热爱编程，关注新技术发展，热衷学习新技术、钻研技术源码；本博客主要记录前端与后端从零学习过程与曾解决的问题</p>
+                    <p>编程真（哔————）是这个世界上最好玩的事情！</p>
+                    <p>本博客主要技术栈：</p>
+                    <p @click="goTo">前端：<span >Less</span>、<span :techid="11">Vue3</span>、<span :techid="10">Typescript</span></p>
+                    <p @click="goTo">后端：<span :techid="1">Java</span>、<span :techid="4">Spring Boot</span>、<span :techid="3">Mysql</span></p>
                 </div>
                 <div class="bigbox" v-show="backShow">
                     <div class="title">后端</div>
@@ -389,6 +394,7 @@ const backShow = ref(true)
 
 .HomeTotal {
     background-color: var(--theme_index_bg_color);
+    user-select: none;
 
     .chanegButton {
         .button {
@@ -486,10 +492,25 @@ const backShow = ref(true)
             margin: 0 auto;
 
             .info {
+                display: flex;
+                flex-direction: column;
                 min-width: 400px;
                 flex: 5;
-                align-self: center;
-                text-align: center;
+                align-self: flex-start;
+                color: var(--theme_active_color);
+                font-size: 2vh;
+                padding-top: 10vh;
+                user-select: none;
+
+                p {
+                    padding: 15px;
+
+                    span {
+                        color: var(--theme_main_color);
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+                }
             }
 
             .bigbox {

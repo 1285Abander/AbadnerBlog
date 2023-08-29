@@ -51,10 +51,10 @@ const useMode = () => {
     }
 
     return {
-        mode: mode,
-        changeMode: changeMode,
+        mode,
+        changeMode,
         cssMode: mode.value === "dark" ? darkMode : lightMode,
-        changeCss: changeCss
+        changeCss
     }
 }
 

@@ -6,7 +6,6 @@ import { ref } from "vue"
 const loading = ref(false)
 
 const changeLoading = (way: "open" | "close") => {
-  console.log("加载")
   if (way === "open" && loading.value === false) {
     loading.value = true
   } else if (way === "close" && loading.value === true) {
@@ -33,13 +32,12 @@ onMounted(() => {
 <template>
   <router-view />
   <transition name="loading">
-
-  </transition>
-  <div class="loading_total" v-show="loading">
-    <div class="show">
-      <p class="loading_text"><span class="A">L</span>oading <span>...</span> </p>
+    <div class="loading_total" v-show="loading">
+      <div class="show">
+        <p class="loading_text"><span class="A">L</span>oading <span>...</span> </p>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <style lang="less">
