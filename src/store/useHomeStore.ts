@@ -21,7 +21,7 @@ export const useHomeStore = defineStore('home', {
       let res = await getHomeList()
       this.options = [
         {
-          value: '前端',
+          value: 'fontend',
           label: '前端',
           children: res.data.fontend.map((item: HomeStoreType.HomeInfo) => {
             return {
@@ -31,7 +31,7 @@ export const useHomeStore = defineStore('home', {
           })
         },
         {
-          value: '后端',
+          value: 'backend',
           label: '后端',
           children: res.data.backend.map((item: HomeStoreType.HomeInfo) => {
             return {

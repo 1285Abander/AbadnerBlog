@@ -24,6 +24,10 @@ const goTo = (e: any) => {
     console.log()
 }
 
+const goWrite = () => {
+    router.push("/write")
+}
+
 //背景Canvas
 class Sun {
     canvas: any;
@@ -325,7 +329,7 @@ const backShow = ref(true)
                     </div>
                 </Transition>
             </div>
-            <h1>Abander Blog</h1>
+            <h1 @dblclick="goWrite">Abander Blog</h1>
             <div class="endTotal">
                 <div class="bigbox" v-show="fontShow">
                     <div class="title">前端</div>
@@ -339,8 +343,10 @@ const backShow = ref(true)
                     <p>笔者简介：6年码龄，掌握C语言，python，C++等编程语言，有硬件开发基础；热爱编程，关注新技术发展，热衷学习新技术、钻研技术源码；本博客主要记录前端与后端从零学习过程与曾解决的问题</p>
                     <p>编程真（哔————）是这个世界上最好玩的事情！</p>
                     <p>本博客主要技术栈：</p>
-                    <p @click="goTo">前端：<span >Less</span>、<span :techid="11">Vue3</span>、<span :techid="10">Typescript</span></p>
-                    <p @click="goTo">后端：<span :techid="1">Java</span>、<span :techid="4">Spring Boot</span>、<span :techid="3">Mysql</span></p>
+                    <p @click="goTo">前端：<span>Less</span>、<span :techid="11">Vue3</span>、<span
+                            :techid="10">Typescript</span></p>
+                    <p @click="goTo">后端：<span :techid="1">Java</span>、<span :techid="4">Spring Boot</span>、<span
+                            :techid="3">Mysql</span></p>
                 </div>
                 <div class="bigbox" v-show="backShow">
                     <div class="title">后端</div>

@@ -4,7 +4,9 @@ import { computed, ref } from "vue"
 import { message } from 'ant-design-vue';
 import { useHomeStore } from '@/store/useHomeStore';
 import useMode from "../../../util/changeMode"
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const HomeStore = useHomeStore()
 const { mode, changeMode, changeCss } = useMode()
 const showTool = ref(false)
@@ -34,11 +36,20 @@ const changeM = () => {
     HomeStore.getMode((mode.value as string))
 }
 
+const goBack = () => {
+    router.back()
+}
+
 </script>
 
 <template>
     <div class="hoverTotal">
         <div class="toolTotal">
+            <Transition name="IconSowZero">
+                <div v-show="showTool" class="sbox" @click="goBack">
+                    <MyIcon class="icon back" type="icon-huitui" />
+                </div>
+            </Transition>
             <Transition name="IconSowOne">
                 <div v-show="showTool" class="sbox" @click="inMaking">
                     <MyIcon class="icon search" type="icon-sousuo" />
@@ -67,6 +78,12 @@ const changeM = () => {
 </template>
 
 <style lang="less" scoped>
+.IconSowZero-enter-from,
+.IconSowZero-leave-to {
+    transform: translateY(400%);
+    opacity: 0;
+}
+
 .IconSowOne-enter-from,
 .IconSowOne-leave-to {
     transform: translateY(300%);

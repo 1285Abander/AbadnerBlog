@@ -35,6 +35,28 @@ document.documentElement.scrollTo({
     <BlogSuspended />
 </template>
 
+<style lang="less">
+.bodyBig {
+    h2 {
+        color: var(--theme_active_color);
+        line-height: 300% !important;
+    }
+
+    h2::after {
+        padding-left: 10px;
+        content: "A";
+        font-style: italic;
+        color: var(--theme_color);
+        opacity: 0;
+    }
+
+    h2:hover::after {
+        transition: all 0.3s ease-in-out;
+        opacity: 100;
+    }
+}
+</style>
+
 <style lang="less" scoped>
 .bodyBig {
     background-color: var(--theme_bg_color);

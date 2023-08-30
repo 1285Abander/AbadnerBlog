@@ -5,7 +5,7 @@ import router from './router'
 import 'highlight.js/styles/github-dark-dimmed.css'
 import 'github-markdown-css/github-markdown-dark.css'
 
-import { Cascader } from "ant-design-vue"
+import { Cascader, Select, Button, Drawer, Input, Popconfirm, Modal } from "ant-design-vue"
 
 import VMdEditor from '@kangc/v-md-editor';
 import '@kangc/v-md-editor/lib/style/base-editor.css';
@@ -21,4 +21,4 @@ VMdEditor.use(githubTheme, {
 
 const pinia = createPinia()
 
-createApp(App).use(Cascader).use(pinia).use(router).use(VMdEditor).mount('#app')
+createApp(App).use(Cascader).use(Select).use(Button).use(Drawer).use(Input).use(Popconfirm).use(Modal).use(pinia).use(router).use(VMdEditor).mount('#app')
