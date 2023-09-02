@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, onMounted, ref } from "vue"
+import { reactive, onMounted, ref, nextTick } from "vue"
 import { notification, message } from 'ant-design-vue';
 import { getBlogFile } from "@/util/api"
 import { useHomeStore } from "@/store/useHomeStore";
@@ -29,13 +29,16 @@ const openModal = () => {
 
 const upLoadMd = () => {
     console.log(text)
-    PostChangeFile({
-        filename: fileValue.value,
-        context: text.value
-    }).then(res => {
-        success(res.data)
-        modalVisible.value = false
-    })
+    if (localStorage.getItem("token") === "Abander")
+        PostChangeFile({
+            filename: fileValue.value,
+            context: text.value
+        }).then(res => {
+            info("success", res.data)
+            modalVisible.value = false
+        })
+    else
+        info("info", '没有权限哦')
 }
 
 
@@ -69,28 +72,45 @@ const handleChange = (v: string) => {
     }
 }
 
-const success = (res: string) => {
-    message.success(
-        res
-    );
+const info = (type: string, res: string) => {
+    switch (type) {
+        case "success":
+            message.success(
+                res
+            );
+            break;
+        case "info":
+            message.info(
+                res
+            )
+            break;
+        default:
+            break;
+    }
+
 }
 
 const onOpenAdd = () => {
     if (visible.value) {
         if (techid && filenameValue.value !== "" && titleValue.value !== "") {
             console.log(techid, filenameValue.value, titleValue.value)
-            postAddFile({
-                filename: filenameValue.value,
-                techid,
-                title: titleValue.value
-            }).then(res => {
-                console.log(res)
-                success(res.data)
-            })
-            WirteStore.getWriteList({
-                techid
-            })
-            onAddClose()
+            if (localStorage.getItem("token") === "Abander") {
+                postAddFile({
+                    filename: filenameValue.value,
+                    techid,
+                    title: titleValue.value
+                }).then(res => {
+                    console.log(res)
+                    info("success", res.data)
+                })
+                WirteStore.getWriteList({
+                    techid
+                })
+                onAddClose()
+            }
+            else
+                info("info", '没有权限哦')
+
         } else {
             notification.open({
                 message: '请输入完整信息',
@@ -115,17 +135,75 @@ const onAddClose = () => {
 
 const onDel = () => {
     if (fileid) {
-        postDeleteFile({
-            fileid,
-            filename: fileValue.value
-        }).then(res => {
-            success(res.data)
-        })
-        fileValue.value = ''
-        text.value = ""
-        fileid = null
+        if (localStorage.getItem("token") === "Abander") {
+            postDeleteFile({
+                fileid,
+                filename: fileValue.value
+            }).then(res => {
+                info("success", res.data)
+            })
+            fileValue.value = ''
+            text.value = ""
+            fileid = null
+        }
+        else
+            info("info", '没有权限哦')
+
     }
 }
+
+//快捷键重写
+
+onMounted(() => {
+    let txtarea = document.querySelector("textarea");
+    if (txtarea)
+        txtarea.onkeydown = (e) => {
+            console.log(e.key);
+            if (e.ctrlKey && e.shiftKey) {
+                e.preventDefault()
+                switch (e.key) {
+                    case "~":
+                        let start = txtarea?.selectionStart;
+                        let finish = txtarea?.selectionEnd;
+                        if (start && finish && start !== finish) {
+                            let allText = txtarea?.value;
+                            let sel = allText?.substring(start, finish);
+                            text.value = allText?.substring(0, start) + "`" + sel + "`" + allText?.substring(finish, allText.length);
+                            nextTick(() => {
+                                txtarea?.setSelectionRange((start as number) + 1, (finish as number) + 1)
+                            })
+                        } else {
+                            info("info", "要先选中哦~")
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            } else if (e.ctrlKey) {
+                switch (e.key) {
+                    case "d":
+                        console.log(1)
+                        e.preventDefault()
+                        let start = txtarea?.selectionStart;
+                        let finish = txtarea?.selectionEnd;
+                        while (text.value[(start as number) - 1] >= "A" && text.value[(start as number) - 1] <= "Z" || text.value[(start as number) - 1] >= "a" && text.value[(start as number) - 1] <= "z") {
+                            (start as number) -= 1;
+                        }
+                        while (text.value[(finish as number) + 1] >= "A" && text.value[(finish as number) + 1] <= "Z" || text.value[(finish as number) + 1] >= "a" && text.value[(finish as number) + 1] <= "z") {
+                            (finish as number) += 1;
+                        }
+                        txtarea?.setSelectionRange((start as number), (finish as number) + 1)
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+})
+
+
+
+
 </script>
 
 <template>
@@ -143,7 +221,8 @@ const onDel = () => {
             </a-button>
             <div class="drawerBox" style="margin-right: 15px;">
                 <a-drawer placement="left" :closable="false" style="background-color: var(--theme_bg_color)"
-                    :visible="visible" :get-container="false" :wrap-style="{ position: 'absolute' }" @close="onAddClose">
+                    :visible="visible" :get-container="false" :wrap-style="{ position: 'absolute' }" @close="onAddClose"
+                    :mask-style="{ backgroundColor: 'var(--theme_main_color)' }">
                     <div class="inputTotal">
                         <a-input v-model:value="filenameValue" placeholder="请输入文件名"
                             style="width: 50%;margin-right: 15px;" />

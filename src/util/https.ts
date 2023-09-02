@@ -1,7 +1,7 @@
 import axios, { InternalAxiosRequestConfig, AxiosResponse, Method, RawAxiosRequestHeaders } from "axios";
 
-axios.defaults.baseURL = "http://localhost:8888/"
-/* axios.defaults.baseURL = "http://120.26.44.158:8888/" */
+/* axios.defaults.baseURL = "http://localhost:8888/" */
+axios.defaults.baseURL = "http://120.26.44.158:8888/"
 axios.defaults.timeout = 6000
 
 axios.interceptors.request.use((config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
