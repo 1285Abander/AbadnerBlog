@@ -201,8 +201,9 @@ onMounted(() => {
         }
 })
 
-
-
+const handleUploadImage = () => {
+    
+}
 
 </script>
 
@@ -239,7 +240,8 @@ onMounted(() => {
             </a-popconfirm>
         </div>
         <div class="Write">
-            <v-md-editor v-model="text" @save="openModal"></v-md-editor>
+            <v-md-editor :disabled-menus="[]" @upload-image="handleUploadImage" v-model="text"
+                @save="openModal"></v-md-editor>
         </div>
         <a-modal v-model:open="modalVisible" title="保存确认" @ok="upLoadMd" okText="保存" cancelText="取消">
             确认保存并上传吗

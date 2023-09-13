@@ -6,7 +6,7 @@ import { useRouter } from 'vue-router';
 import useMode from "../../util/changeMode"
 import BlogNotice from "./components/BlogNotice.vue";
 
-//初始化
+// * 初始化
 const HomeStore = useHomeStore()
 const router = useRouter()
 HomeStore.getHomeList()
@@ -21,14 +21,13 @@ const goTo = (e: any) => {
             }
         })
     }
-    console.log()
 }
 
 const goWrite = () => {
     router.push("/write")
 }
 
-//背景Canvas
+// * 背景Canvas
 class Sun {
     canvas: any;
     context: any;
@@ -252,7 +251,7 @@ onMounted(() => {
     HomeStore.getMode((mode.value as string))
 })
 
-//切换主题
+// * 切换主题
 let { changeMode, mode, cssMode, changeCss } = useMode()
 const loading = ref(false)
 
@@ -285,12 +284,12 @@ const logoSrc = computed(() => {
     return mode.value === "dark" ? true : false
 })
 
-//更新公告
+// * 更新公告
 const noticeShow = ref(false)
 const showNotice = () => {
     noticeShow.value = !noticeShow.value
 }
-/* 遮罩层 */
+/* 遮罩层  */
 watchEffect(() => {
     if (noticeShow.value) {
         document.body.style.cssText = "width:clc(100%);height:100vh;overflow:hidden;"
@@ -298,9 +297,25 @@ watchEffect(() => {
         document.body.style.cssText = "overflow:auto"
     }
 })
-//个人展示2.0
-const fontShow = ref(true)
-const backShow = ref(true)
+// * 个人展示2.0
+const fontShow = ref(9)
+const backShow = ref(9)
+
+/*当前展示的技术栈 */
+const nowFontend = computed(() => {
+    return HomeStore.homeList.fontend ? HomeStore.homeList.fontend.slice(0, fontShow.value) : []
+})
+
+const MoreEnd = (n: number) => {
+    if (n === 1) {
+        if (fontShow.value > 9) {
+            fontShow.value = 9
+            return
+        }
+        fontShow.value = HomeStore.homeList.fontend.length
+    }
+}
+
 </script>
 
 <template>
@@ -331,14 +346,16 @@ const backShow = ref(true)
             </div>
             <h1 @dblclick="goWrite">Abander Blog</h1>
             <div class="endTotal">
-                <div class="bigbox" v-show="fontShow">
+                <div :class="fontShow === 9 ? 'bigbox' : 'bigbox showbox'">
                     <div class="title">前端</div>
                     <div class="box" @click="goTo">
-                        <div class="sbox" v-for="item1 in HomeStore.homeList.fontend" v-text="item1.techstack"
-                            :techid="item1.techid"></div>
+                        <div class="sbox" v-for="item1 in nowFontend" v-text="item1.techstack" :techid="item1.techid"></div>
+                    </div>
+                    <div class="button" @click="MoreEnd(1)" v-show="nowFontend.length >= 9">
+                        {{ nowFontend.length == 9 ? "More" : "Less" }}
                     </div>
                 </div>
-                <div class="info">
+                <div class="info" v-show="fontShow <= 9 && backShow <= 9">
                     <p>笔者姓名：姚涵豪</p>
                     <p>笔者简介：6年码龄，掌握C语言，python，C++等编程语言，有硬件开发基础；热爱编程，关注新技术发展，热衷学习新技术、钻研技术源码；本博客主要记录前端与后端从零学习过程与曾解决的问题</p>
                     <p>编程真（哔————）是这个世界上最好玩的事情！</p>
@@ -348,7 +365,7 @@ const backShow = ref(true)
                     <p @click="goTo">后端：<span :techid="1">Java</span>、<span :techid="4">Spring Boot</span>、<span
                             :techid="3">Mysql</span></p>
                 </div>
-                <div class="bigbox" v-show="backShow">
+                <div :class="backShow === 9 ? 'bigbox' : 'bigbox showbox'">
                     <div class="title">后端</div>
                     <div class="box" @click="goTo">
                         <div class="sbox" v-for="item1 in HomeStore.homeList.backend" v-text="item1.techstack"
@@ -520,8 +537,9 @@ const backShow = ref(true)
             }
 
             .bigbox {
+                transition: all 0.3s ease-in-out;
                 margin-top: 40px;
-                flex: 5;
+                width: 60vh;
 
                 .title {
                     text-align: center;
@@ -530,6 +548,7 @@ const backShow = ref(true)
                 }
 
                 .box {
+                    overflow: hidden;
                     display: grid;
                     grid-template-columns: repeat(3, 15vh);
                     gap: 30px;
@@ -548,6 +567,31 @@ const backShow = ref(true)
                         box-shadow: 0 0 5px 0 white;
                         color: black;
                     }
+                }
+
+                .button {
+                    background-color: var(--theme_main_color);
+                    color: var(--theme_bg_color);
+                    border-radius: 15px;
+                    width: 30%;
+                    height: 5vh;
+                    line-height: 5vh;
+                    text-align: center;
+                    margin: 1vh auto;
+                }
+
+                .button:hover {
+                    transition: all 0.3s ease-in-out;
+                    background-color: var(--theme_active_color);
+                }
+            }
+
+            .showbox {
+                width: 120vh;
+
+                .box {
+                    margin-right: 2vh;
+                    grid-template-columns: repeat(6, 15vh);
                 }
             }
         }
